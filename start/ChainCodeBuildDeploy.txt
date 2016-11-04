@@ -1,0 +1,16 @@
+
+cd $GOPATH/src/github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/ 
+go build ./ >buildLog.txt
+call :buildifEmpty "buildLog.txt"
+goto nonCompile
+
+:buildifEmpty
+if %~z1 eq 0 del %1  
+git status 
+git add --all 
+git commit -m "Compiled my code" 
+git push
+exit /b
+
+:nonCompile
+type "buildLog.txt"
