@@ -26,7 +26,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 	err := stub.PutState("hello_world", []byte(args[0]))
-	err : =stub.PutState("mainWindow", []byte('<div>Username</div><div>Account Balance</div>'));
+	err := stub.PutState("mainWindow", []byte("<div>Username</div><div>Account Balance</div>"))
 	if err != nil {
 		return nil, err
 	}
@@ -104,13 +104,12 @@ func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte,
 	return valAsbytes, nil
 }
 
-function (t* SimpleChaincode) getView(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) getView(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var err error
 	var val string
-	val , err :=stub.GetState("mainWindow");
+	val, err := stub.GetState("mainWindow")
 	return val, error
 }
-
 
 func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	u, err := uuid.NewV4()
@@ -118,8 +117,6 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 	var b = []byte(s)
 	return b, err
 }
-
-
 
 func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, role pb.Role, memberMetadata string, opt ...string) (string, error) {
 	tok, err = ca.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
