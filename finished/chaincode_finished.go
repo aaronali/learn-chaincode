@@ -1,11 +1,12 @@
- 
 package main
 
 import (
 	"errors"
 	"fmt"
-	"github.com/nu7hatch/gouuid" 
+
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric/membersrvc/ca"
+	"github.com/nu7hatch/gouuid"
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -24,8 +25,8 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
-
 	err := stub.PutState("hello_world", []byte(args[0]))
+	err : =stub.PutState("mainWindow", []byte('<div>Username</div><div>Account Balance</div>'));
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +60,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	if function == "login" { //read a variable
 		return t.login(stub, args)
 	}
-	
+
 	fmt.Println("query did not find func: " + function)
 
 	return nil, errors.New("Received unknown function query: " + function)
@@ -103,10 +104,24 @@ func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte,
 	return valAsbytes, nil
 }
 
+function (t* SimpleChaincodeStub) getView(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	var err error
+	var val string
+	val , err :=stub.GetState("mainWindow");
+	
+}
 
-func (t *SimpleChaincode)login(stub *shim.ChaincodeStub, args  []string)([]byte, error)  {
+
+func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	u, err := uuid.NewV4()
-	var s =u.String() 
+	var s = u.String()
 	var b = []byte(s)
 	return b, err
+}
+
+
+
+func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, role pb.Role, memberMetadata string, opt ...string) (string, error) {
+	tok, err = ca.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
+	return tok, err
 }
