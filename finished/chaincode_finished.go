@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/hyperledger/fabric/membersrvc/ca"
 	"github.com/nu7hatch/gouuid"
 )
 
@@ -26,9 +25,12 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 	err := stub.PutState("hello_world", []byte(args[0]))
-	err := stub.PutState("mainWindow", []byte("<div>Username</div><div>Account Balance</div>"))
+	err1 := stub.PutState("mainWindow", []byte("<div>Username</div><div>Account Balance</div>"))
 	if err != nil {
 		return nil, err
+	}
+	if err1 != nil {
+		return nil, err1
 	}
 
 	return nil, nil
@@ -106,9 +108,8 @@ func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte,
 
 func (t *SimpleChaincode) getView(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var err error
-	var val []byte
 	val, err := stub.GetState("mainWindow")
-	return val, error
+	return val, err
 }
 
 func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
@@ -118,7 +119,8 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 	return b, err
 }
 
-func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, role pb.Role, memberMetadata string, opt ...string) (string, error) {
-	tok, err = ca.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
-	return tok, err
+func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, role int, memberMetadata string, opt ...string) (string, error) {
+	var err error
+	//	tok, err = ca.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
+	return "nil", err
 }
