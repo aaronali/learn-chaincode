@@ -106,7 +106,7 @@ func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte,
 
 func (t *SimpleChaincode) getView(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var err error
-	var val string
+	var val []byte
 	val, err := stub.GetState("mainWindow")
 	return val, error
 }
