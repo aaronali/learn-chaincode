@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
@@ -169,13 +170,15 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 		var temp AccountUser
 		temp.AccountId = accountId
 		temp.userId = userId
+		temp.key = uuid() + ":" + string(len(t.users))
 		fmt.Println(temp)
 		t.users[username] = temp
 		fmt.Println(t.users)
+		accountUser = temp
 	}
 	err = nil
-	u := uuid()
-	var b = []byte(u)
+	var b []byte
+	b, err = json.Marshal(accountUser)
 	var val []byte
 	val, err = stub.GetState("CurrentUsers")
 	fmt.Print(val)
