@@ -1,11 +1,11 @@
 package main
 
 import (
+	"crypto/rand"
 	"errors"
 	"fmt"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/nu7hatch/gouuid"
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -115,14 +115,29 @@ func (t *SimpleChaincode) getView(stub *shim.ChaincodeStub, args []string) ([]by
 }
 
 func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	u, err := uuid.NewV4()
-	var s = u.String()
-	var b = []byte(s)
+	var err error
+	err = nil
+	u := uuid()
+	var b = []byte(u)
 	return b, err
 }
 
 func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, role int, memberMetadata string, opt ...string) (string, error) {
 	var err error
-	//	tok, err = ca.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
+	///	tok, err = c///a.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
 	return "nil", err
+}
+
+func uuid() (uuid string) {
+
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+
+	uuid = fmt.Sprintf("%X-%X-%X-%X-%X", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+
+	return
 }
