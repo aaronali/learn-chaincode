@@ -4,12 +4,48 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
+type Trade struct {
+	Entity    string  `json:"entity"`
+	Char      string  `json:"char"`
+	Event     string  `json:"event"`
+	Action    string  `json:"action"`
+	Price     float64 `json:"price"`
+	Units     int     `json:"units"`
+	Status    string  `json:"status"`
+	Expiry    string  `json:"expiry"`
+	Fulfilled int     `json:"fulfilled"`
+}
+
+type HappeningRegister struct {
+	Char  string `json:"char"`
+	Event string `json:"event"`
+	User  string `json:"user"`
+}
+
+type AccountUser struct {
+	userId    string
+	AccountId string
+	key       string
+	lasKey    string
+}
+
+type User struct {
+	StringKey     string
+	StringKeyLast string
+	UserID        string `json:"userID"`
+	Status        string `json:"status"`
+	Cash          int    `json:"cash"`
+}
+
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
+	users  map[string]AccountUser
+	logger *shim.ChaincodeLogger
 }
 
 func main() {
@@ -21,6 +57,8 @@ func main() {
 
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+	t.users = make(map[string]AccountUser)
+	t.logger = shim.NewLogger("AppLogger")
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
@@ -45,7 +83,10 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
+	} else if function == "registarLogin" {
+		return t.write(stub, args)
 	}
+
 	fmt.Println("invoke did not find func: " + function)
 
 	return nil, errors.New("Received unknown function invocation: " + function)
@@ -53,6 +94,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 // Query is our entry point for queries
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+	//userKey = args[1]
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
@@ -91,6 +133,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	t.logger.Info("read")
 	var key, jsonResp string
 	var err error
 
@@ -115,10 +158,36 @@ func (t *SimpleChaincode) getView(stub *shim.ChaincodeStub, args []string) ([]by
 }
 
 func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	t.logger.Info("function login")
+	var username string
+	var ok bool
+	username = args[0]
+	accountId := args[1]
+	userId := args[2]
+	var accountUser AccountUser
 	var err error
+	accountUser, ok = t.users[username]
+	if ok {
+
+		fmt.Println("good")
+		t.logger.Info("Logged in already")
+	} else {
+		t.logger.Info("Loggins in user")
+		var temp AccountUser
+		temp.AccountId = accountId
+		temp.userId = userId
+		fmt.Println(temp)
+		t.users[username] = temp
+		fmt.Println(t.users)
+	}
+	t.logger.Info(accountUser)
 	err = nil
 	u := uuid()
 	var b = []byte(u)
+	var val []byte
+	val, err = stub.GetState("CurrentUsers")
+	fmt.Print(val)
+	//val, err := stub.PutState("")
 	return b, err
 }
 
@@ -126,6 +195,60 @@ func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, r
 	var err error
 	///	tok, err = c///a.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
 	return "nil", err
+}
+
+func (t *SimpleChaincode) registarLogin(stub *shim.ChaincodeStub, user User) (string, error) {
+	var err error
+	var val []byte
+	val, err = stub.GetState("CurrentUsers")
+	t.logger.Info(val)
+	return "nil", err
+}
+
+// need to make a persistance class / data abstraction
+func (t *SimpleChaincode) push(stub *shim.ChaincodeStub, structureName string, value []byte) ([]byte, error) {
+	fmt.Printf("Running Push")
+	index, err := t.getNextIndex(stub, "Last"+structureName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Write the state back to the ledger
+	var key string
+
+	key = structureName + string(index)
+
+	err = stub.PutState(key, []byte(value))
+	if err != nil {
+		return nil, err
+	}
+
+	return index, nil
+}
+
+func (t *SimpleChaincode) getNextIndex(stub *shim.ChaincodeStub, lastIDString string) ([]byte, error) {
+	fmt.Printf("Running getNextIndex")
+
+	var id int
+	var err error
+	lastID, err := stub.GetState(lastIDString)
+	if err != nil {
+		id = 1
+	} else {
+		temp, err := strconv.Atoi(string(lastID))
+		if err != nil {
+			return nil, err
+		}
+		id = temp + 1
+	}
+
+	idString := []byte(strconv.Itoa(id)) //not really an id "string".  the byte array / string in this language is a pain
+	err = stub.PutState(lastIDString, idString)
+	if err != nil {
+		return nil, err
+	}
+
+	return idString, nil
 }
 
 func uuid() (uuid string) {
@@ -138,6 +261,6 @@ func uuid() (uuid string) {
 	}
 
 	uuid = fmt.Sprintf("%X-%X-%X-%X-%X", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
-
+	fmt.Println(uuid)
 	return
 }
