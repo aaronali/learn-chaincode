@@ -44,8 +44,7 @@ type User struct {
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
-	users  map[string]AccountUser
-	logger *shim.ChaincodeLogger
+	users map[string]AccountUser
 }
 
 func main() {
@@ -58,7 +57,6 @@ func main() {
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	t.users = make(map[string]AccountUser)
-	t.logger = shim.NewLogger("AppLogger")
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
@@ -133,7 +131,6 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	t.logger.Info("read")
 	var key, jsonResp string
 	var err error
 
@@ -158,7 +155,6 @@ func (t *SimpleChaincode) getView(stub *shim.ChaincodeStub, args []string) ([]by
 }
 
 func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	t.logger.Info("function login")
 	var username string
 	var ok bool
 	username = args[0]
@@ -170,9 +166,7 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 	if ok {
 
 		fmt.Println("good")
-		t.logger.Info("Logged in already")
 	} else {
-		t.logger.Info("Loggins in user")
 		var temp AccountUser
 		temp.AccountId = accountId
 		temp.userId = userId
@@ -180,13 +174,13 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 		t.users[username] = temp
 		fmt.Println(t.users)
 	}
-	t.logger.Info(accountUser)
 	err = nil
 	u := uuid()
 	var b = []byte(u)
 	var val []byte
 	val, err = stub.GetState("CurrentUsers")
 	fmt.Print(val)
+	fmt.Print(accountUser)
 	//val, err := stub.PutState("")
 	return b, err
 }
@@ -200,8 +194,9 @@ func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, r
 func (t *SimpleChaincode) registarLogin(stub *shim.ChaincodeStub, user User) (string, error) {
 	var err error
 	var val []byte
+
 	val, err = stub.GetState("CurrentUsers")
-	t.logger.Info(val)
+	fmt.Print(val)
 	return "nil", err
 }
 
