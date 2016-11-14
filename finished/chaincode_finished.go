@@ -75,14 +75,13 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 // Invoke isur entry point to invoke a chaincode function
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
-
 	// Handle different functions
 	if function == "init" {
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
 	} else if function == "registarLogin" {
-		return t.write(stub, args)
+		return t.login(stub, args)
 	}
 
 	fmt.Println("invoke did not find func: " + function)
