@@ -163,7 +163,7 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 	var accountUser AccountUser
 	var err error
 	accountUser, ok = t.users[username]
-	if ok=true {
+	if ok {
 
 		fmt.Println("good")
 	} else {
