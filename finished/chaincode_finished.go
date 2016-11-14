@@ -81,7 +81,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
-	} else if function == "registarLogin" {
+	} else if function == "login" {
 		return t.login(stub, args)
 	}
 
@@ -163,7 +163,7 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 	var accountUser AccountUser
 	var err error
 	accountUser, ok = t.users[username]
-	if ok {
+	if ok=true {
 
 		fmt.Println("good")
 	} else {
@@ -185,22 +185,6 @@ func (t *SimpleChaincode) login(stub *shim.ChaincodeStub, args []string) ([]byte
 	fmt.Print(accountUser)
 	//val, err := stub.PutState("")
 	return b, err
-}
-
-func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, role int, memberMetadata string, opt ...string) (string, error) {
-	var err error
-	///	tok, err = c///a.registerUserWithEnrollID(id, string, role, memberMetadata, opt)
-	return "nil", err
-}
-
-func (t *SimpleChaincode) registarLogin(stub *shim.ChaincodeStub, args []string) (string, error) {
-	t.login(stub, args)
-	var err error
-	var val []byte
-
-	val, err = stub.GetState("CurrentUsers")
-	fmt.Print(val)
-	return "nil", err
 }
 
 // need to make a persistance class / data abstraction
