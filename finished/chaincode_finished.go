@@ -191,7 +191,8 @@ func (t *SimpleChaincode) registerUserWithEnrollID(id string, enrollID string, r
 	return "nil", err
 }
 
-func (t *SimpleChaincode) registarLogin(stub *shim.ChaincodeStub, user User) (string, error) {
+func (t *SimpleChaincode) registarLogin(stub *shim.ChaincodeStub, args []string) (string, error) {
+	t.login(stub, args)
 	var err error
 	var val []byte
 
