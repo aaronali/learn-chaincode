@@ -84,6 +84,12 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	if err != nil {
 		return nil, err
 	}
+
+	_, err = t.registerUser("user_type1_0")
+	if err != nil {
+		return nil, err
+	}
+
 	_, err = t.registerUser("user_type8_1")
 	if err != nil {
 		return nil, err
