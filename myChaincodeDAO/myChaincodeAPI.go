@@ -84,7 +84,10 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	if err != nil {
 		return nil, err
 	}
-
+	_, err = t.registerUser("user_type8_1")
+	if err != nil {
+		return nil, err
+	}
 	//register our securities and offer them for sale
 	_, err = t.registerSecurity("JaimeKilled", "Jaime gets killed")
 	if err != nil {
@@ -215,8 +218,6 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 		fmt.Printf("Function is query")
 		return nil, errors.New("Invalid query function name. Expecting holdings, ballance, users or securities")
 	}
-
-	return nil, nil
 }
 
 func main() {
