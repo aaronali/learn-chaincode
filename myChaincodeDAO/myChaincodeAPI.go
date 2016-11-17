@@ -51,7 +51,7 @@ type SimpleChaincode struct {
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	log.Print("callling init")
+	log.Debug("callling init")
 	//initialize our repositories
 	t.bl.initObjects(stub)
 	 
@@ -148,7 +148,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, err
 	}
 	
-	log.Print("finishing init init")
+	log.Debug("finishing init init")
 	t.bl.writeOut("Before return")
 	return nil, nil
 }
@@ -162,7 +162,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	t.bl.initObjects(stub) //for some reason the stub changes each call
 	// Handle different functions
 	if function == "init" {
-		fmt.Printf("Function is init")
+		fmt.Print("Function is init")
 		return t.Init(stub, function, args)
 	} else if function == "ask" || function == "bid" {
 		// offers squares up for sale as initial public offering
