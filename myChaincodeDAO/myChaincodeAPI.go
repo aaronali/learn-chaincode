@@ -50,7 +50,7 @@ type SimpleChaincode struct {
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
 	var clof *shim.ChaincodeLogger
-	clof.Debug("INIT %s", args)  
+	clof.Infof("%s", "INIT : inside init")   
 	//initialize our repositories
 	t.bl.initObjects(stub)
 	t.bl.writeOut("in init")
