@@ -28,10 +28,12 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+		"github.com/op/go-logging"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
+ 
 
-
+var log = logging.MustGetLogger("SimpleChaincode")
 
 
 // SimpleChaincode example simple Chaincode implementation
@@ -49,10 +51,10 @@ type SimpleChaincode struct {
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	
+	log.Debug("callling init")
 	//initialize our repositories
 	t.bl.initObjects(stub)
-	
+	 
 	t.bl.writeOut("in init")
 	
 	//Register some users.  this would normally happen via the UI but we will do it here to simplify
