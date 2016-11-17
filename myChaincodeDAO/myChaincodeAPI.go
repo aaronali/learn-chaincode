@@ -27,14 +27,12 @@ package main
 import (
 	"errors"
 	"fmt"
-	"strconv"
-		"github.com/op/go-logging"
+	"strconv" 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
  
 
-var log = logging.MustGetLogger("SimpleChaincode")
-
+ 
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -51,10 +49,10 @@ type SimpleChaincode struct {
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	log.Debug("callling init")
+	var clof *shim.ChaincodeLogger
+	clof.Debug("INIT %s", args)  
 	//initialize our repositories
 	t.bl.initObjects(stub)
-	 
 	t.bl.writeOut("in init")
 	
 	//Register some users.  this would normally happen via the UI but we will do it here to simplify
@@ -147,8 +145,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		t.bl.writeOut("in init: after dividend in err != nil")
 		return nil, err
 	}
-	
-	log.Debug("finishing init init")
+	 
 	t.bl.writeOut("Before return")
 	return nil, nil
 }
