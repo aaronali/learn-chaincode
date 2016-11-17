@@ -27,7 +27,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"strconv" 
+	"strconv"  
+	"github.com/op/go-logging"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
  
@@ -49,9 +50,8 @@ type SimpleChaincode struct {
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	var clof *shim.ChaincodeLogger
-	clof.SetLevel(shim.LogDebug) 
-	clof.Infof("INIT : inside init",nil)   
+	var log = logging.MustGetLogger("main")
+	log.Debugf("worker %d test logger er er er er e r e re rere re re ", 0)
 	//initialize our repositories
 	t.bl.initObjects(stub)
 	t.bl.writeOut("in init")
