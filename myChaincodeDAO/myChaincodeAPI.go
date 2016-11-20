@@ -206,7 +206,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 // Query callback representing the query of a chaincode
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	fmt.Printf("Query called, determining function")
+	fmt.Printf("Query called, determining function") 
 	
 	t.bl.initObjects(stub)
 	// Handle different functions
