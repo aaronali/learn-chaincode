@@ -27,13 +27,12 @@ package main
 import (
 	"errors"
 	"fmt"
-	"strconv"  
-	"github.com/op/go-logging"
+	"strconv"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
- 
 
- 
+
+
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -50,10 +49,10 @@ type SimpleChaincode struct {
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	var log = logging.MustGetLogger("main")
-	log.Debugf("worker %d test logger er er er er e r e re rere re re ", 0)
+	
 	//initialize our repositories
 	t.bl.initObjects(stub)
+	
 	t.bl.writeOut("in init")
 	
 	//Register some users.  this would normally happen via the UI but we will do it here to simplify
@@ -91,6 +90,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	if err != nil {
 		return nil, err
 	}
+	
 	//register our securities and offer them for sale
 	_, err = t.bl.registerSecurity("JaimeKilled", "Jaime gets killed")
 	if err != nil {
@@ -146,7 +146,8 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		t.bl.writeOut("in init: after dividend in err != nil")
 		return nil, err
 	}
-	 
+	
+	
 	t.bl.writeOut("Before return")
 	return nil, nil
 }
@@ -160,7 +161,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	t.bl.initObjects(stub) //for some reason the stub changes each call
 	// Handle different functions
 	if function == "init" {
-		fmt.Print("Function is init")
+		fmt.Printf("Function is init")
 		return t.Init(stub, function, args)
 	} else if function == "ask" || function == "bid" {
 		// offers squares up for sale as initial public offering
