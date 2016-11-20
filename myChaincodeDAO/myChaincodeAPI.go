@@ -150,7 +150,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, err
 	}
 	
-	_, err = t.bl.registerTrade("bid", "user_type1_0", "Nickle", 100, "")
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Nickle",defaultPrice, 100, "")
 	if err != nil {
 		return nil, err
 	}
