@@ -28,8 +28,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/op/go-logging"
+	"github.com/hyperledger/fabric/core/chaincode/shim" 
 )
 
 var logger = shim.NewLogger("myChaincodeApi")
