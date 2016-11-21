@@ -50,13 +50,22 @@ type SimpleChaincode struct {
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
 	
+	
 	//initialize our repositories
 	t.bl.initObjects(stub)
 	
 	t.bl.writeOut("in init")
 	
+	// test of undocumented functions
+	err := stub.CreateTable("AssetsOwnership", []*shim.ColumnDefinition{ 
+		&shim.ColumnDefinition{Name: "Asset", Type: shim.ColumnDefinition_STRING, Key: true}, 
+		&shim.ColumnDefinition{Name: "Owner", Type: shim.ColumnDefinition_BYTES, Key: false}, 
+	}) 
+	adminCert, err := stub.GetCallerMetadata()
+	adminCert = adminCert
+	
 	//Register some users.  this would normally happen via the UI but we will do it here to simplify
-	_, err := t.bl.registerUser("BANK")
+	_, err = t.bl.registerUser("BANK")
 	if err != nil {
 		return nil, err
 	}
@@ -82,11 +91,6 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	}
 	
 	_, err = t.bl.registerUser("Mustafa")
-	if err != nil {
-		return nil, err
-	}	
-	
-	_, err = t.bl.registerUser("user_type1_0")
 	if err != nil {
 		return nil, err
 	}
