@@ -29,9 +29,10 @@ import (
 	"fmt"
 	"strconv"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/op/go-logging"
 )
 
-
+var logger = shim.NewLogger("myChaincodeApi")
 
 
 // SimpleChaincode example simple Chaincode implementation
@@ -49,7 +50,7 @@ type SimpleChaincode struct {
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	
+	logger.Warningf("myChainCodeDAO : %s", "init")
 	//initialize our repositories
 	t.bl.initObjects(stub)
 	
@@ -266,4 +267,9 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
 	}
+	
+	logger.SetLevel(shim.LogInfo)
+
+    logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
+    shim.SetLoggingLevel(logLevel)
 }  
