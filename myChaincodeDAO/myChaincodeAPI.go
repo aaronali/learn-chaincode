@@ -268,8 +268,6 @@ func main() {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
 	}
 	
-	logger.SetLevel(shim.LogInfo)
-
-    logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
-    shim.SetLoggingLevel(logLevel)
+	logger.SetLevel(shim.LogInfo) 
+	shim.SetLoggingLevel(shim.LogInfo)
 }  
