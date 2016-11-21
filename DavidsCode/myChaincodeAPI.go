@@ -101,7 +101,10 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	if err != nil {
 		return nil, err
 	}
-	
+		_, err = t.bl.registerUser("user_type1_1")
+	if err != nil {
+		return nil, err
+	} 
 	//register our securities and offer them for sale
 	_, err = t.bl.registerSecurity("Gold", "Gold killed")
 	if err != nil {
@@ -145,37 +148,105 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, err
 	}
 	//
-		_, err = t.bl.registerTrade("bid", "user_type1_0", "Gold", defaultPrice, 100, "")
+		_, err = t.bl.registerTrade("bid", "user_type1_0", "Gold", defaultPrice, 1000, "")
 	if err != nil {
 		return nil, err
 	}
 	
 	
-	_, err = t.bl.registerTrade("bid", "user_type1_0", "Silver", defaultPrice, 100, "")
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Silver", defaultPrice, 1000, "")
 	if err != nil {
 		return nil, err
 	}
 	
-	_, err = t.bl.registerTrade("bid", "user_type1_0", "Bronze", defaultPrice, 100, "")
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Bronze", defaultPrice, 1000, "")
 	if err != nil {
 		return nil, err
 	}
 	
-	_, err = t.bl.registerTrade("bid", "user_type1_0", "Nickle",defaultPrice, 100, "")
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Nickle",defaultPrice, 1000, "")
 	if err != nil {
 		return nil, err
 	}
-		
+		 
+			_, err = t.bl.registerTrade("bid", "user_type1_0", "Gold", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
 	
-	_, err = t.bl.registerTrade("bid", "user_type1_0", "Nickle", defaultPrice, 100, "")
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_0", "Silver", defaultPrice, 1000, "")
 	if err != nil {
 		return nil, err
 	}
 	
-	_, err = t.bl.registerTrade("bid", "Aaron", "Nickle", defaultPrice, 100, "")
+	_, err = t.bl.registerTrade("ask", "user_type1_0", "Bronze", defaultPrice, 1000, "")
 	if err != nil {
 		return nil, err
 	}
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_0", "Nickle",defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	
+	
+	
+	
+			_, err = t.bl.registerTrade("bid", "user_type1_1", "Gold", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	
+	_, err = t.bl.registerTrade("bid", "user_type1_1", "Silver", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("bid", "user_type1_1", "Bronze", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("bid", "user_type1_1", "Nickle",defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+		 
+			_, err = t.bl.registerTrade("bid", "user_type1_1", "Gold", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_1", "Silver", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_1", "Bronze", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_1", "Nickle",defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	
+	
+	
+	_, err = t.bl.registerTrade("ask", "Aaron", "Nickle", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	
+	
+	
 	
 	t.bl.writeOut("Before dividend")
 	//offer payoff anyone with Jaime,Killed (Aaron)
