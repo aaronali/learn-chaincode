@@ -175,7 +175,21 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	}
 	
 	
- 
+	_, err = t.bl.registerTrade("ask", "user_type1_0", "Silver", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_0", "Bronze", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_0", "Nickle",defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
 	
 	
 	
@@ -206,7 +220,21 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, err
 	}
 	
-	 
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_1", "Silver", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_1", "Bronze", defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "user_type1_1", "Nickle",defaultPrice, 1000, "")
+	if err != nil {
+		return nil, err
+	}
 	
 	
 	
