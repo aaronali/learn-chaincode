@@ -195,9 +195,7 @@ func (t *ChaincodeBusinessLayer) ballance(stub *shim.ChaincodeStub, userID strin
 
 
 
-
-// registerTrade(tradeType string, userID string, securityID string, price float64, units int, expiry string) ([]byte, error)
-// => initial public offering for a square
+// initial public offering for a square
 func (t *ChaincodeBusinessLayer) registerTrade(tradeType string, userID string, securityID string, price float64, units int, expiry string) ([]byte, error) {
 	fmt.Printf("Running registerTrade")
 	
@@ -229,8 +227,8 @@ func (t *ChaincodeBusinessLayer) registerTrade(tradeType string, userID string, 
 }
 
 
-// registerSecurity(securityID string, desc string) ([]byte, error)
-// => Registers a security in th system making it available for users
+
+// initial public offering for a square
 func (t *ChaincodeBusinessLayer) registerSecurity(securityID string, desc string) ([]byte, error) {
 	fmt.Printf("Running registerSecurity")
 	

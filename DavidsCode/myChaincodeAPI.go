@@ -97,20 +97,26 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	
 	
 	//register our securities and offer them for sale
-	_, err = t.bl.registerSecurity("JaimeKilled", "Jaime gets killed")
-	if err != nil {
-		return nil, err
-	}
-	_, err = t.bl.registerSecurity("JaimeKiller", "Jaime does the killing")
+	_, err = t.bl.registerUser("user_type1_0")
 	if err != nil {
 		return nil, err
 	}
 	
-	_, err = t.bl.registerSecurity("JonKilled", "Jon gets killed")
+	//register our securities and offer them for sale
+	_, err = t.bl.registerSecurity("Gold", "Gold killed")
 	if err != nil {
 		return nil, err
 	}
-	_, err = t.bl.registerSecurity("JonKiller", "Jon does the killing")
+	_, err = t.bl.registerSecurity("Silver","Silver Shares")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerSecurity("Nickle", "Nickle Shares")
+	if err != nil {
+		return nil, err
+	}
+	_, err = t.bl.registerSecurity("Bronze", "Bronze Shares")
 	if err != nil {
 		return nil, err
 	}
@@ -118,39 +124,67 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	
 	
 	//the bank does an IPO
-	_, err = t.bl.registerTrade("ask", "BANK", "JaimeKilled", defaultPrice, 100, "")
-	if err != nil {
-		return nil, err
-	}
-	
-	_, err = t.bl.registerTrade("ask", "BANK", "JaimeKiller", defaultPrice, 100, "")
-	if err != nil {
-		return nil, err
-	}
-	
-	_, err = t.bl.registerTrade("ask", "BANK", "JonKilled", defaultPrice, 100, "")
-	if err != nil {
-		return nil, err
-	}
-	
-	_, err = t.bl.registerTrade("ask", "BANK", "JonKiller", defaultPrice, 100, "")
+	_, err = t.bl.registerTrade("ask", "BANK", "Gold", defaultPrice, 100, "")
 	if err != nil {
 		return nil, err
 	}
 	
 	
-	_, err = t.bl.registerTrade("bid", "Aaron", "JaimeKilled", defaultPrice, 100, "")
+	_, err = t.bl.registerTrade("ask", "BANK", "Silver", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "BANK", "Bronze", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("ask", "BANK", "Nickle", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	//
+		_, err = t.bl.registerTrade("bid", "user_type1_0", "Gold", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Silver", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Bronze", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Nickle",defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+		
+	
+	_, err = t.bl.registerTrade("bid", "user_type1_0", "Nickle", defaultPrice, 100, "")
+	if err != nil {
+		return nil, err
+	}
+	
+	_, err = t.bl.registerTrade("bid", "Aaron", "Nickle", defaultPrice, 100, "")
 	if err != nil {
 		return nil, err
 	}
 	
 	t.bl.writeOut("Before dividend")
 	//offer payoff anyone with Jaime,Killed (Aaron)
-	_, err = t.bl.dividend("JaimeKilled", 50)
+	_, err = t.bl.dividend("Nickle", 50)
 	if err != nil {
 		t.bl.writeOut("in init: after dividend in err != nil")
 		return nil, err
 	}
+	
 	
 	
 	t.bl.writeOut("Before return")

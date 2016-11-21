@@ -28,10 +28,10 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"github.com/hyperledger/fabric/core/chaincode/shim" 
+	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
-var logger = shim.NewLogger("myChaincodeApi")
+
 
 
 // SimpleChaincode example simple Chaincode implementation
@@ -49,14 +49,23 @@ type SimpleChaincode struct {
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	logger.Warningf("myChainCodeDAO : %s", "init")
+	
+	
 	//initialize our repositories
 	t.bl.initObjects(stub)
 	
 	t.bl.writeOut("in init")
 	
+	// test of undocumented functions
+	err := stub.CreateTable("AssetsOwnership", []*shim.ColumnDefinition{ 
+		&shim.ColumnDefinition{Name: "Asset", Type: shim.ColumnDefinition_STRING, Key: true}, 
+		&shim.ColumnDefinition{Name: "Owner", Type: shim.ColumnDefinition_BYTES, Key: false}, 
+	}) 
+	adminCert, err := stub.GetCallerMetadata()
+	adminCert = adminCert
+	
 	//Register some users.  this would normally happen via the UI but we will do it here to simplify
-	_, err := t.bl.registerUser("BANK")
+	_, err = t.bl.registerUser("BANK")
 	if err != nil {
 		return nil, err
 	}
@@ -86,6 +95,8 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, err
 	}
 	
+	
+	//register our securities and offer them for sale
 	_, err = t.bl.registerUser("user_type1_0")
 	if err != nil {
 		return nil, err
@@ -110,7 +121,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, err
 	}
 	
-	 
+	
 	
 	//the bank does an IPO
 	_, err = t.bl.registerTrade("ask", "BANK", "Gold", defaultPrice, 100, "")
@@ -175,6 +186,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	}
 	
 	
+	
 	t.bl.writeOut("Before return")
 	return nil, nil
 }
@@ -233,7 +245,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 // Query callback representing the query of a chaincode
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	fmt.Printf("Query called, determining function") 
+	fmt.Printf("Query called, determining function")
 	
 	t.bl.initObjects(stub)
 	// Handle different functions
@@ -266,7 +278,4 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
 	}
-	
-	logger.SetLevel(shim.LogInfo) 
-	shim.SetLoggingLevel(shim.LogInfo)
 }  
