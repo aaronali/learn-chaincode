@@ -101,6 +101,10 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	if err != nil {
 		return nil, err
 	}
+		_, err = t.bl.registerUser("user_type1_1")
+	if err != nil {
+		return nil, err
+	}
 	
 	//register our securities and offer them for sale
 	_, err = t.bl.registerSecurity("Gold", "Gold killed")
