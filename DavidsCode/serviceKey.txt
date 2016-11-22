@@ -1,1 +1,1 @@
-{"jsonrpc":"2.0","result":{"status":"OK","message":"6bb1bfa6cae129196a64516874cd08d18b5596765c6b08a19661ff59e2b908dc4958d528093b09bb6c9ea398f9f45300210d4b85fd5881e28299ef565def8a73"},"id":1}
+{"jsonrpc":"2.0","error":{"code":-32000,"message":"Registration missing","data":"User not logged in. Use the '/registrar' endpoint to obtain a security token."},"id":1}
