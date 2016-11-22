@@ -45,6 +45,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	//initialize our repositories
 	t.bl.initObjects(stub)
 	t.bl.writeOut("in init")
+	err error
 	// test of undocumented functions
 	/*err := stub.CreateTable("AssetsOwnership", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "Asset", Type: shim.ColumnDefinition_STRING, Key: true},
