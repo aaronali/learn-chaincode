@@ -39,7 +39,7 @@ type SimpleChaincode struct {
 //********************************************************************************************************
 
 //Init the blockchain.  populate a 2x2 grid of potential events for users to buy
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) ([]byte, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
 
 	//initialize our repositories
@@ -183,7 +183,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	// Handle different functions
 	if function == "init" {
 		fmt.Printf("Function is init")
-		return t.Init(stub)
+		return t.Init(stub, function, args)
 	} else if function == "ask" || function == "bid" {
 		// offers squares up for sale as initial public offering
 		fmt.Printf("Function is trade")
